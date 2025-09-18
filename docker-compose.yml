@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: .
+    container_name: greenx-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/app                # mount your source code
+      - /app/node_modules      # avoid overwriting node_modules
+    command: npm run dev       # override CMD for hot reload (React/Node dev server)
