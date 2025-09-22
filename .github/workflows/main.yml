@@ -1,0 +1,24 @@
+name: Frontend CI/CD (Self-hosted)
+
+on:
+  push:
+    branches:
+      - '**'   # Kisi bhi branch par commit/push ho to workflow trigger hoga
+
+jobs:
+  build:
+    runs-on: self-hosted   # Ye aapki VM par chalega (osboxes runner)
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Docker build
+        run: docker build -t greenx-frontend:latest .
+
+      - name: Run container
+        run: |
+          docker stop greenx-frontend || true
+          docker rm greenx-frontend || true
+          docker run -d -p 3000:3000 --name greenx-frontend greenx-frontend:latest
+
